@@ -215,7 +215,7 @@ bool __attribute__((weak)) oplus_is_ptcrb_version(void)
 }
 
 /****************************************/
-#define RESET_MCU_DELAY_30S		6
+#define RESET_MCU_DELAY_30S			10
 static int reset_mcu_delay = 0;
 static bool mcu_update = false;
 static int efttest_count = 1;
@@ -9860,7 +9860,7 @@ static void oplus_chg_chargerid_switch_check(struct oplus_chg_chip *chip)
 	return oplus_chg_get_chargerid_voltage(chip);
 }
 
-#define RESET_MCU_DELAY_15S		3
+#define RESET_MCU_DELAY_15S		6
 #define RESET_MCU_DELAY_45S		9
 #define RESET_MCU_DELAY_150S		30
 

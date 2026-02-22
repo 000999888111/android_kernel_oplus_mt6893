@@ -2000,24 +2000,15 @@ out:
 			|| (data == VOOC_NOTIFY_ALLOW_READING_IIC)
 			|| (data == VOOC_NOTIFY_BTB_TEMP_OVER)) {
 		oplus_vooc_battery_update();
-		if (oplus_vooc_get_reset_active_status() != 1
-			&& data == VOOC_NOTIFY_FAST_PRESENT) {
-			chip->allow_reading = true;
-			chip->fastchg_started = false;
-			chip->fastchg_to_normal = false;
-			chip->fastchg_to_warm = false;
-			chip->fastchg_ing = false;
-			chip->btb_temp_over = false;
-			adapter_fw_ver_info = false;
-			adapter_model_factory = false;
-			chip->fastchg_dummy_started = false;
-			oplus_chg_set_charger_type_unknown();
-			oplus_chg_clear_chargerid_info();
-			oplus_chg_set_chargerid_switch_val(0);
-			chip->vops->set_switch_mode(chip, NORMAL_CHARGER_MODE);
-			oplus_vooc_del_watchdog_timer(chip);
-			oplus_vooc_set_awake(chip, false);
-			oplus_vooc_cancel_bcc_work_exit_fastchg();
+		if (data == VOOC_NOTIFY_FAST_PRESENT) {
+			if (oplus_vooc_get_reset_active_status() != 1) {
+				chg_debug("FAST_PRESENT received but reset_active is not 1, allowing handshake to continue\n");
+			}
+			/* 
+			 * chip->allow_reading = true;
+			 * chip->fastchg_started = false;
+			 * ... original reset logic removed to prevent charging loop ...
+			 */
 		}
 	} else if ((data == VOOC_NOTIFY_LOW_TEMP_FULL)
 		|| (data == VOOC_NOTIFY_FAST_ABSENT)
