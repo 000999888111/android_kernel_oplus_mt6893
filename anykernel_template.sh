@@ -14,7 +14,7 @@ device.name1=RMX3031
 device.name2=RealmeX7Max
 device.name3=cupid
 device.name4=mt6893
-device.name5=
+device.name5=DN2101
 supported.versions=
 supported.patchlevels=
 supported.vendorpatchlevels=
@@ -41,3 +41,6 @@ split_boot;
 
 flash_boot;
 ## end boot install
+device.name6=DN2103
+device.name7=denniz
+device.name8=RMX3350
