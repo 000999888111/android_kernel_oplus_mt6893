@@ -4,7 +4,7 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=SukiSU-Ultra-Definitive-xCaptaiN09
+kernel.string=Realme_UI_NoRoot_RMX3031
 do.devicecheck=1
 do.modules=0
 do.systemless=1
