@@ -42,5 +42,9 @@ PATCH_VBMETA_FLAG=auto;
 # boot install
 split_boot;
 
+# init.rc patch for Color OS 16 / Realme UI cgroup fix
+backup_file init.rc;
+replace_string init.rc "cpuctl cpu,timer_slack" "mount cgroup none /dev/cpuctl cpu" "mount cgroup none /dev/cpuctl cpu,timer_slack";
+
 flash_boot;
 ## end boot install
