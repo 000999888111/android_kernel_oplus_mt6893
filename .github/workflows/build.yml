@@ -21,7 +21,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         mkdir -p clang-aosp
-        git clone -q --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-6443078 -b 10.0 clang-aosp
+        git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang-aosp
 
 
     - name: Download kernel source
