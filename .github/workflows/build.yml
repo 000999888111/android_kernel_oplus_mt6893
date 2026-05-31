@@ -11,11 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
+    - name: Set up environment
       run: |
         sudo apt-get update
         sudo apt-get install -y bc bison build-essential curl flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi git gnupg gperf libncurses5-dev libssl-dev python2 python3 zip zlib1g-dev
-
+        mkdir -p $GITHUB_WORKSPACE/kernel_workspace
 
     - name: Set up Clang
       run: |
