@@ -1,49 +1,68 @@
 name: Build Kernel
 
 on:
-  push:
-    branches: [ lineage-23.2, realme-ui, realme-ui-ksu ]
   workflow_dispatch:
 
 jobs:
   build:
+  
     runs-on: ubuntu-22.04
+    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y bc bison build-essential curl flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi git gnupg gperf libncurses5-dev libssl-dev python2 python3 zip zlib1g-dev
 
-    - name: Set up Proton Clang
-      run: |
-        mkdir -p $GITHUB_WORKSPACE/toolchain
-        git clone --depth=1 https://github.com/kdrag0n/proton-clang.git $GITHUB_WORKSPACE/toolchain/proton-clang
 
+    - name: Set up Clang
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        mkdir -p clang-aosp
+        git clone -q --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-6443078 -b 10.0 clang-aosp
+
+
+    - name: Download kernel source
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        git clone https://github.com/000999888111/android_kernel_oplus_mt6893 android-kernel
+        cd android-kernel
+
+
+    - name: Update kernelsu
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        rm -rf KernelSU
+        curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
+
+    
     - name: Build Kernel
       run: |
-        sed -i 's|TOOLCHAIN=.*|TOOLCHAIN='$GITHUB_WORKSPACE'/toolchain/proton-clang|' build_kernel.sh
-        bash build_kernel.sh
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:$GITHUB_WORKSPACE/kernel_workspace/gcc64/bin:$GITHUB_WORKSPACE/kernel_workspace/gcc32/bin:$PATH
+        make -s -j$(nproc --all) O=out ARCH=arm64 cupida_defconfig
+        make -j$(nproc --all) CC=clang O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- LD=ld.lld
+ 
+
+    - name: Create AnyKernel3 Zip
+      run: |
+        git clone --depth=1 https://github.com/000999888111/AnyKernel3.git
+        cp android-kernel/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
+        rm -rf AnyKernel3/.git* AnyKernel3/README.md
+        zip -r9 ./Realme_UI_KSU_RMX3031.zip AnyKernel3/*
+
 
     - name: Upload Image.gz-dtb
       uses: actions/upload-artifact@v4
       with:
         name: Image.gz-dtb
-        path: out/arch/arm64/boot/Image.gz-dtb
+        path: kernel_workspace/android-kernel/out/arch/arm64/boot/Image.gz-dtb
 
-    - name: Create AnyKernel3 Zip
-      run: |
-        git clone --depth=1 https://github.com/osm0sis/AnyKernel3.git
-        cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
-        cp anykernel_template.sh AnyKernel3/anykernel.sh
-        cd AnyKernel3
-        rm -rf .git
-        zip -r9 ../Realme_UI_NoRoot_RMX3031.zip *
 
-    - name: Upload Flashable Zip
+    - name: Upload Anykernel3 zip
       uses: actions/upload-artifact@v4
       with:
-        name: Realme_UI_NoRoot_RMX3031
-        path: Realme_UI_NoRoot_RMX3031.zip
+        name: Realme_UI_resukisu_RMX3031
+        path: kernel_workspace/android-kernel/Realme_UI_resukisu_RMX3031.zip
