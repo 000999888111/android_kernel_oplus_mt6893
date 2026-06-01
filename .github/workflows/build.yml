@@ -42,17 +42,17 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH
-        CLANG=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/clang
-        LD=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/ld.lld
-        AR=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-ar
-        NM=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-nm
-        OBJCOPY=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objcopy
-        OBJDUMP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objdump
-        STRIP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-strip
-        HOSTCC=/usr/bin/gcc
-        HOSTCXX=/usr/bin/g++
-        HOSTLD=/usr/bin/ld
-        HOSTAS=/usr/bin/as
+        export CLANG=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/clang
+        export LD=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/ld.lld
+        export AR=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-ar
+        export NM=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-nm
+        export OBJCOPY=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objcopy
+        export OBJDUMP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objdump
+        export STRIP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-strip
+        export HOSTCC=/usr/bin/gcc
+        export HOSTCXX=/usr/bin/g++
+        export HOSTLD=/usr/bin/ld
+        export HOSTAS=/usr/bin/as
         rm -rf out
         mkdir -p out
     
