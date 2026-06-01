@@ -50,7 +50,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         make -s -j$(nproc --all) O=out ARCH=arm64 cupida_defconfig
-        make -j1 \
+        make -j$(nproc --all) \
           CC=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/clang \
           LD=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/ld.lld \
           AR=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-ar \
