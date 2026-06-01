@@ -41,18 +41,8 @@ jobs:
     - name: Set up before build
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH
-        export CLANG=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/clang
-        export LD=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/ld.lld
-        export AR=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-ar
-        export NM=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-nm
-        export OBJCOPY=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objcopy
-        export OBJDUMP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objdump
-        export STRIP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-strip
-        export HOSTCC=/usr/bin/gcc
-        export HOSTCXX=/usr/bin/g++
-        export HOSTLD=/usr/bin/ld
-        export HOSTAS=/usr/bin/as
+        export ARCH=arm64
+        export SUBARCH=arm64
         rm -rf out
         mkdir -p out
     
@@ -60,7 +50,16 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         make -s -j$(nproc --all) O=out ARCH=arm64 cupida_defconfig
-        make -j1 CC="$CLANG" LD="$LD" AR="$AR" NM="$NM" OBJCOPY="$OBJCOPY" OBJDUMP="$OBJDUMP" STRIP="$STRIP" HOSTCC=/usr/bin/gcc HOSTCXX=/usr/bin/g++ HOSTLD=/usr/bin/ld HOSTAS=/usr/bin/as O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
+        make -j1 \
+          CC=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/clang \
+          LD=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/ld.lld \
+          AR=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-ar \
+          NM=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-nm \
+          OBJCOPY=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objcopy \
+          OBJDUMP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-objdump \
+          STRIP=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-strip \
+          HOSTCC=/usr/bin/gcc HOSTCXX=/usr/bin/g++ HOSTLD=/usr/bin/ld HOSTAS=/usr/bin/as \
+          O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
  
 
     - name: Create AnyKernel3 Zip
