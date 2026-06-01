@@ -68,7 +68,7 @@ jobs:
         git clone --depth=1 https://github.com/000999888111/AnyKernel3.git
         cp android-kernel/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
         rm -rf AnyKernel3/.git* AnyKernel3/README.md
-        zip -r9 ./Realme_UI_KSU_RMX3031.zip AnyKernel3/*
+        zip -r9 ./Realme_UI_resukisu_RMX3031.zip AnyKernel3/*
 
 
     - name: Upload Image.gz-dtb
