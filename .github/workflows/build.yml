@@ -41,7 +41,7 @@ jobs:
     - name: Set up before build
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:$PATH
+        export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH
         CLANG=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/clang
         LD=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/ld.lld
         AR=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/llvm-ar
